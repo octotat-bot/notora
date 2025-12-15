@@ -3,21 +3,20 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useNotes } from '../context/NotesContext';
 import { useNotification } from '../context/NotificationContext';
 import NoteEditor from '../components/NoteEditor';
-import { FiArrowLeft, FiSave, FiArchive, FiX, FiAlertTriangle } from 'react-icons/fi';
+import { FiArrowLeft, FiSave, FiX } from 'react-icons/fi';
+import '../styles/NoteEditorPage.css';
 const NoteEditorPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { 
-    notes, 
-    archivedNotes, 
+  const {
+    notes,
+    archivedNotes,
     lockedNotes,
-    createNote, 
-    updateNote, 
-    archiveNote,
-    lockNote
+    createNote,
+    updateNote
   } = useNotes();
-  const { showSuccess, showError, showInfo } = useNotification();
+  const { showSuccess, showError } = useNotification();
   const [note, setNote] = useState(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -30,7 +29,6 @@ const NoteEditorPage = () => {
   const notebookIdFromUrl = urlParams.get('notebookId');
   const [showBackConfirmation, setShowBackConfirmation] = useState(false);
   useEffect(() => {
-    const path = location.pathname;
     setViewMode(false);
   }, [location, id]);
   useEffect(() => {
@@ -38,7 +36,7 @@ const NoteEditorPage = () => {
     console.log('NoteEditorPage: notes =', notes);
     console.log('NoteEditorPage: archivedNotes =', archivedNotes);
     console.log('NoteEditorPage: lockedNotes =', lockedNotes);
-    
+
     if (id === 'new') {
       setIsNew(true);
       setNote(null);
@@ -78,20 +76,20 @@ const NoteEditorPage = () => {
     // If no data is provided, use the current state
     const noteTitle = data.title !== undefined ? data.title : title;
     const noteContent = data.content !== undefined ? data.content : content;
-    
+
     if (!noteTitle.trim() && !noteContent.trim()) {
       navigate('/');
       return;
     }
-    
+
     const noteData = {
       title: noteTitle.trim() || 'Untitled',
-      content: noteContent || '', 
+      content: noteContent || '',
       tagIds: selectedTags,
       notebookId: selectedNotebook,
       updatedAt: new Date().toISOString()
     };
-    
+
     try {
       if (isNew) {
         const newNote = createNote(noteData);
@@ -100,7 +98,7 @@ const NoteEditorPage = () => {
       } else {
         updateNote(id, {
           title: noteTitle.trim() || 'Untitled',
-          content: noteContent || '', 
+          content: noteContent || '',
           tagIds: selectedTags,
           notebookId: selectedNotebook,
           updatedAt: new Date().toISOString()
@@ -113,16 +111,16 @@ const NoteEditorPage = () => {
       showError('Error saving note. Please try again.');
     }
   };
-  // Check if there are unsaved changes
+
   const hasUnsavedChanges = useCallback(() => {
     if (!viewMode && (title.trim() || content.trim())) {
-      // For existing notes, check if content has changed
+
       if (!isNew && note) {
         const originalTitle = note.title || '';
         const originalContent = note.content || '';
         return title !== originalTitle || content !== originalContent;
       }
-      // For new notes, any content means unsaved changes
+
       return true;
     }
     return false;
@@ -149,22 +147,22 @@ const NoteEditorPage = () => {
     setShowBackConfirmation(false);
   };
 
-  // Handle keyboard shortcuts and browser events
+
   useEffect(() => {
-    // Handle Escape key to close confirmation dialog
+
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && showBackConfirmation) {
         setShowBackConfirmation(false);
       }
-      
-      // Ctrl+S or Cmd+S to save
+
+
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
         handleSave();
       }
     };
-    
-    // Handle browser back button and page unload
+
+
     const handleBeforeUnload = (e) => {
       if (hasUnsavedChanges()) {
         const message = 'You have unsaved changes. Are you sure you want to leave?';
@@ -173,10 +171,10 @@ const NoteEditorPage = () => {
         return message;
       }
     };
-    
+
     document.addEventListener('keydown', handleKeyDown);
     window.addEventListener('beforeunload', handleBeforeUnload);
-    
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('beforeunload', handleBeforeUnload);
@@ -186,11 +184,21 @@ const NoteEditorPage = () => {
     <div className="note-editor-page">
       <div className="editor-header">
         <button className="back-button" onClick={handleBackClick}>
-          <FiArrowLeft /> Back
+          <FiArrowLeft /> <span className="button-text">Back</span>
         </button>
+        
+        <div className="mobile-only editor-quick-actions">
+          <button 
+            className="mobile-save-button"
+            onClick={handleSave}
+            aria-label="Save Note"
+          >
+            <FiSave /> <span className="button-text">Save</span>
+          </button>
+        </div>
       </div>
-      
-      <NoteEditor 
+
+      <NoteEditor
         mode={id === 'new' ? 'create' : 'edit'}
         title={title}
         content={content}
@@ -203,7 +211,7 @@ const NoteEditorPage = () => {
         onSave={handleSave}
         readOnly={viewMode}
       />
-      
+
       {showBackConfirmation && (
         <div className="notification-dialog">
           <div className="confirmation-content">
@@ -211,10 +219,10 @@ const NoteEditorPage = () => {
             <p>You have unsaved changes. What would you like to do?</p>
             <div className="confirmation-actions">
               <button className="cancel-button" onClick={confirmLeaveWithoutSaving}>
-                <FiX /> Discard
+                <FiX /> <span className="button-text">Discard</span>
               </button>
               <button className="confirm-button" onClick={confirmSaveAndLeave}>
-                <FiSave /> Save & Leave
+                <FiSave /> <span className="button-text">Save & Leave</span>
               </button>
             </div>
           </div>

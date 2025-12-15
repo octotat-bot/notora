@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNotes } from '../context/NotesContext';
 import NoteCard from '../components/NoteCard';
-import { FiPlus, FiX, FiEdit2, FiTag, FiTrash2 } from 'react-icons/fi';
+import { FiPlus, FiX, FiEdit2, FiTag, FiTrash2, FiAlertTriangle } from 'react-icons/fi';
 import EmptyState from '../components/EmptyState';
+import '../styles/TagsPage.css';
 const TagsPage = () => {
   const { tags, notes, createTag, updateTag, deleteTag, getNotesByTag } = useNotes();
   const [selectedTag, setSelectedTag] = useState(null);
@@ -62,7 +64,7 @@ const TagsPage = () => {
     <div className="tags-page">
       <div className="page-header">
         <h1>Tags</h1>
-        <button 
+        <button
           className="new-tag-button"
           onClick={() => setIsCreatingTag(true)}
           disabled={isCreatingTag || isEditingTag}
@@ -73,19 +75,19 @@ const TagsPage = () => {
       <div className="tags-container">
         <div className="tags-list">
           {tags.map(tag => (
-            <div 
-              key={tag.id} 
+            <div
+              key={tag.id}
               className={`tag-item ${selectedTag && selectedTag.id === tag.id ? 'active' : ''}`}
               onClick={() => setSelectedTag(tag)}
             >
-              <div 
-                className="tag-color" 
+              <div
+                className="tag-color"
                 style={{ backgroundColor: tag.color }}
               />
               <span className="tag-name">{tag.name}</span>
               <span className="tag-count">{getNotesByTag(tag.id).length}</span>
               <div className="tag-actions">
-                <button 
+                <button
                   className="edit-tag-button"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -94,7 +96,7 @@ const TagsPage = () => {
                 >
                   <FiEdit2 />
                 </button>
-                <button 
+                <button
                   className="delete-tag-button"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -107,7 +109,7 @@ const TagsPage = () => {
             </div>
           ))}
           {tags.length === 0 && !isCreatingTag && (
-            <EmptyState 
+            <EmptyState
               icon={<FiTag />}
               title="No tags yet"
               message="Categorize your notes by creating tags"
@@ -120,18 +122,18 @@ const TagsPage = () => {
             <h2>Create New Tag</h2>
             <div className="form-group">
               <label>Name</label>
-              <input 
-                type="text" 
-                value={tagName} 
+              <input
+                type="text"
+                value={tagName}
                 onChange={(e) => setTagName(e.target.value)}
                 placeholder="Tag name"
               />
             </div>
             <div className="form-group">
               <label>Color</label>
-              <input 
-                type="color" 
-                value={tagColor} 
+              <input
+                type="color"
+                value={tagColor}
                 onChange={(e) => setTagColor(e.target.value)}
               />
             </div>
@@ -146,18 +148,18 @@ const TagsPage = () => {
             <h2>Edit Tag</h2>
             <div className="form-group">
               <label>Name</label>
-              <input 
-                type="text" 
-                value={tagName} 
+              <input
+                type="text"
+                value={tagName}
                 onChange={(e) => setTagName(e.target.value)}
                 placeholder="Tag name"
               />
             </div>
             <div className="form-group">
               <label>Color</label>
-              <input 
-                type="color" 
-                value={tagColor} 
+              <input
+                type="color"
+                value={tagColor}
                 onChange={(e) => setTagColor(e.target.value)}
               />
             </div>
@@ -170,8 +172,8 @@ const TagsPage = () => {
         {selectedTag && !isEditingTag && (
           <div className="tag-notes">
             <h2>
-              <span 
-                className="tag-color-indicator" 
+              <span
+                className="tag-color-indicator"
                 style={{ backgroundColor: selectedTag.color }}
               />
               {selectedTag.name}
@@ -190,19 +192,22 @@ const TagsPage = () => {
           </div>
         )}
       </div>
-      {showConfirmation && (
-        <div className="confirmation-content" style={{ background: '#ffffff', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', border: '3px solid #ffff00', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: '1000', padding: '16px', borderRadius: '8px', maxWidth: '350px', margin: '0 auto' }} onClick={(e) => e.stopPropagation()}>
-          <h3 style={{ marginTop: '0' }}><FiAlertTriangle /> Delete Tag</h3>
-          <p>Are you sure you want to delete this tag? Notes with this tag will remain in your notes list.</p>
-          <div className="confirmation-actions" style={{ marginBottom: '0' }}>
-            <button className="cancel-button" onClick={cancelDeleteTag}>
-              <FiX /> Cancel
-            </button>
-            <button className="confirm-button" onClick={confirmDeleteTag}>
-              <FiTrash2 /> Delete
-            </button>
+      {showConfirmation && createPortal(
+        <div className="modal-overlay" onClick={cancelDeleteTag}>
+          <div className="confirmation-content" onClick={(e) => e.stopPropagation()}>
+            <h3><FiAlertTriangle /> Delete Tag</h3>
+            <p>Are you sure you want to delete this tag? Notes with this tag will remain in your notes list.</p>
+            <div className="confirmation-actions">
+              <button className="cancel-button" onClick={cancelDeleteTag}>
+                <FiX /> Cancel
+              </button>
+              <button className="confirm-button" onClick={confirmDeleteTag}>
+                <FiTrash2 /> Delete
+              </button>
+            </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

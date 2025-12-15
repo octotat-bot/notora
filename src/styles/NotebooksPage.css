@@ -608,6 +608,69 @@
 .delete-btn:hover {
   background-color: #ff1744;
 }
+
+.modal-content {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slide-up 0.3s ease;
+  border: 1px solid #333;
+}
+
+.modal-content h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-actions .cancel-button,
+.modal-actions .confirm-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.modal-actions .cancel-button {
+  background-color: transparent;
+  color: #ccc;
+  border: 1px solid #444;
+}
+
+.modal-actions .cancel-button:hover {
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+.modal-actions .confirm-button {
+  background-color: #ffd700;
+  color: #121212;
+}
+
+.modal-actions .confirm-button:hover {
+  background-color: #ffcc00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
 @media (max-width: 768px) {
   .notebooks-page {
     padding: 1rem;

@@ -1,0 +1,80 @@
+.note-editor-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: var(--color-desk);
+  border-bottom: 1px solid var(--color-wood);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--color-wood);
+  padding: 8px 16px;
+  border-radius: var(--border-radius-md);
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+}
+
+.back-button:hover {
+  background-color: rgba(255, 215, 0, 0.1);
+}
+
+.editor-quick-actions {
+  display: none;
+}
+
+.mobile-save-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-primary);
+  color: var(--color-black);
+  padding: 8px 16px;
+  border-radius: var(--border-radius-md);
+  font-weight: bold;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .editor-header {
+    padding: 10px 15px;
+    position: sticky;
+    top: var(--mobile-header-height);
+  }
+  
+  .editor-quick-actions {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .editor-header {
+    padding: 8px 10px;
+  }
+  
+  .back-button {
+    padding: 8px 12px;
+  }
+  
+  .mobile-save-button {
+    padding: 8px 12px;
+  }
+  
+  .button-text {
+    display: none;
+  }
+}

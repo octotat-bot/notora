@@ -3,11 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { useNotes } from '../context/NotesContext';
 import { useNotification } from '../context/NotificationContext';
-import { 
-  FiBold, 
-  FiItalic, 
-  FiUnderline, 
-  FiList, 
+import {
+  FiBold,
+  FiItalic,
+  FiUnderline,
+  FiList,
   FiCheckSquare,
   FiImage,
   FiFile,
@@ -16,11 +16,13 @@ import {
   FiLock,
   FiX,
   FiTag,
-  FiAlertTriangle
+  FiAlertTriangle,
+  FiPlus
 } from 'react-icons/fi';
 import PinModal from './PinModal';
+import NotebookSelector from './NotebookSelector';
 import '../styles/NoteEditor.css';
-const NoteEditor = ({ 
+const NoteEditor = ({
   mode = 'create',
   title: initialTitle = '',
   content: initialContent = '',
@@ -36,15 +38,16 @@ const NoteEditor = ({
   const { id } = useParams();
   const navigate = useNavigate();
   const { isSignedIn } = useUser();
-  const { 
-    notes, 
-    archivedNotes, 
+  const {
+    notes,
+    archivedNotes,
     lockedNotes,
-    createNote, 
+    createNote,
     updateNote,
     archiveNote,
     lockNote,
-    isPinSet
+    isPinSet,
+    tags
   } = useNotes();
   const { showSuccess, showError } = useNotification();
   const [title, setTitle] = useState(initialTitle || '');
@@ -52,7 +55,9 @@ const NoteEditor = ({
   const [selectedTags, setSelectedTags] = useState(initialTags || []);
   const [selectedNotebook, setSelectedNotebook] = useState(initialNotebook || null);
   const [isSaving, setIsSaving] = useState(false);
+  const [showTagDropdown, setShowTagDropdown] = useState(false);
   const editorRef = useRef(null);
+  const tagDropdownRef = useRef(null);
   useEffect(() => {
     setTitle(initialTitle || '');
     setContent(initialContent || '');
@@ -85,12 +90,32 @@ const NoteEditor = ({
       editorRef.current.innerHTML = newContent;
     }
   }, [initialContent]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tagDropdownRef.current && !tagDropdownRef.current.contains(event.target)) {
+        setShowTagDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleAddTag = (tagId) => {
+    if (!selectedTags.includes(tagId)) {
+      const newTags = [...selectedTags, tagId];
+      setSelectedTags(newTags);
+      if (onTagsChange) onTagsChange(newTags);
+    }
+    setShowTagDropdown(false);
+  };
+
   const handleSave = () => {
     setIsSaving(true);
     try {
       const currentContent = editorRef.current ? editorRef.current.innerHTML : content;
-      
-      // If parent component provided onSave handler, use it
+
+
       if (onSave) {
         onSave({
           title,
@@ -99,7 +124,7 @@ const NoteEditor = ({
           tagIds: selectedTags
         });
       } else {
-        // Fallback to direct save if no parent handler
+
         if (mode === 'create') {
           const noteData = {
             title,
@@ -280,7 +305,7 @@ const NoteEditor = ({
     const file = e.target.files[0];
     if (!file || !editorRef.current) return;
     const fileLink = document.createElement('a');
-    fileLink.textContent = `File: ${file.name}`;
+    fileLink.textContent = `File: ${file.name} `;
     fileLink.href = '#';
     fileLink.className = 'attached-file';
     editorRef.current.focus();
@@ -312,7 +337,7 @@ const NoteEditor = ({
   return (
     <div className="note-editor">
       {showPinModal && (
-        <PinModal 
+        <PinModal
           isOpen={showPinModal}
           onClose={() => setShowPinModal(false)}
           mode="set"
@@ -321,7 +346,7 @@ const NoteEditor = ({
       )}
       <div className="editor-toolbar">
         <div className="formatting-buttons">
-          <button 
+          <button
             className="toolbar-button"
             onClick={() => applyFormatting('bold')}
             aria-label="Bold"
@@ -329,7 +354,7 @@ const NoteEditor = ({
           >
             <FiBold />
           </button>
-          <button 
+          <button
             className="toolbar-button"
             onClick={() => applyFormatting('italic')}
             aria-label="Italic"
@@ -337,7 +362,7 @@ const NoteEditor = ({
           >
             <FiItalic />
           </button>
-          <button 
+          <button
             className="toolbar-button"
             onClick={() => applyFormatting('underline')}
             aria-label="Underline"
@@ -348,7 +373,7 @@ const NoteEditor = ({
         </div>
         <div className="toolbar-separator" />
         <div className="list-buttons">
-          <button 
+          <button
             className="toolbar-button"
             onClick={() => applyFormatting('orderedList')}
             aria-label="Numbered List"
@@ -356,7 +381,7 @@ const NoteEditor = ({
           >
             <FiList />
           </button>
-          <button 
+          <button
             className="toolbar-button"
             onClick={() => applyFormatting('bulletList')}
             aria-label="Bullet List"
@@ -364,7 +389,7 @@ const NoteEditor = ({
           >
             <FiList />
           </button>
-          <button 
+          <button
             className="toolbar-button"
             onClick={() => applyFormatting('checkbox')}
             aria-label="Checkbox"
@@ -377,18 +402,18 @@ const NoteEditor = ({
         <div className="insert-buttons">
           <label className="toolbar-button" aria-label="Insert Image" title="Insert Image">
             <FiImage />
-            <input 
-              type="file" 
+            <input
+              type="file"
               accept="image/*"
               onChange={handleImageUpload}
               style={{ display: 'none' }}
             />
           </label>
         </div>
-        
+
         <div className="toolbar-separator" />
         <div className="action-buttons">
-          <button 
+          <button
             className="toolbar-button save-button"
             onClick={handleSave}
             aria-label="Save Note"
@@ -397,7 +422,7 @@ const NoteEditor = ({
           >
             <FiSave /> {isSaving ? 'Saving...' : 'Save'}
           </button>
-          <button 
+          <button
             className="toolbar-button archive-button"
             onClick={handleArchive}
             aria-label="Archive Note"
@@ -405,7 +430,7 @@ const NoteEditor = ({
           >
             <FiArchive /> Archive
           </button>
-          <button 
+          <button
             className="toolbar-button lock-button"
             onClick={handleLock}
             aria-label="Lock Note"
@@ -415,7 +440,7 @@ const NoteEditor = ({
           </button>
         </div>
       </div>
-      
+
       <div className="editor-content">
         <input
           type="text"
@@ -428,16 +453,86 @@ const NoteEditor = ({
           }}
           readOnly={readOnly}
         />
-        
-        <div 
+
+        <div className="note-metadata">
+          <NotebookSelector
+            selectedNotebook={selectedNotebook}
+            onNotebookChange={(notebookId) => {
+              setSelectedNotebook(notebookId);
+              if (onNotebookChange) onNotebookChange(notebookId);
+            }}
+          />
+
+          <div className="tags-selector" ref={tagDropdownRef}>
+            <FiTag className="tag-icon" />
+            <span className="tags-label">Tags:</span>
+            <div className="selected-tags">
+              {selectedTags.length === 0 ? (
+                <span className="no-tags">No tags</span>
+              ) : (
+                selectedTags.map(tagId => {
+                  const tag = tags.find(t => t.id === tagId);
+                  return tag ? (
+                    <span
+                      key={tag.id}
+                      className="tag-badge"
+                      style={{ backgroundColor: tag.color }}
+                    >
+                      {tag.name}
+                      <button
+                        className="remove-tag"
+                        onClick={() => {
+                          const newTags = selectedTags.filter(id => id !== tagId);
+                          setSelectedTags(newTags);
+                          if (onTagsChange) onTagsChange(newTags);
+                        }}
+                      >
+                        <FiX />
+                      </button>
+                    </span>
+                  ) : null;
+                })
+              )}
+              <button
+                className="add-tag-button"
+                onClick={() => setShowTagDropdown(!showTagDropdown)}
+                title="Add tag"
+              >
+                <FiPlus />
+              </button>
+            </div>
+            {showTagDropdown && tags.length > 0 && (
+              <div className="tag-dropdown">
+                {tags.filter(tag => !selectedTags.includes(tag.id)).map(tag => (
+                  <div
+                    key={tag.id}
+                    className="tag-option"
+                    onClick={() => handleAddTag(tag.id)}
+                  >
+                    <span
+                      className="tag-color-indicator"
+                      style={{ backgroundColor: tag.color }}
+                    />
+                    {tag.name}
+                  </div>
+                ))}
+                {tags.filter(tag => !selectedTags.includes(tag.id)).length === 0 && (
+                  <div className="no-tags-available">All tags added</div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div
           ref={editorRef}
           className="notebook-paper"
           contentEditable={!readOnly}
-          placeholder="Start writing your note here..."
-          dangerouslySetInnerHTML={{ __html: content }}
+          suppressContentEditableWarning={true}
+          data-placeholder="Start writing your note here..."
         ></div>
       </div>
-      
+
       {showArchiveConfirmation && createPortal(
         <div className="confirmation-content" style={{ background: '#ffffff', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', border: '3px solid #ffff00', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: '1000', padding: '16px', borderRadius: '8px', maxWidth: '350px', margin: '0 auto' }} onClick={(e) => e.stopPropagation()}>
           <h3 style={{ marginTop: '0' }}><FiAlertTriangle /> Archive Note</h3>

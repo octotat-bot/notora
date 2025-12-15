@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import NotificationProvider from './context/NotificationContext';
@@ -16,18 +16,52 @@ import NotFoundPage from './pages/NotFoundPage';
 import SignInPage from './components/SignIn';
 import SignUpPage from './components/SignUp';
 import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react';
+import { FiMenu, FiX } from 'react-icons/fi';
 function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
   const toggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
+    if (isMobile) {
+      setMobileMenuOpen(!mobileMenuOpen);
+    } else {
+      setSidebarCollapsed(!sidebarCollapsed);
+    }
   };
   return (
     <NotificationProvider>
       <NotesProvider>
         <BrowserRouter>
-          <div className={`app-container ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-            <Sidebar collapsed={sidebarCollapsed} toggleSidebar={toggleSidebar} />
-            <main className="main-content">
+          <div className={`app-container ${sidebarCollapsed ? 'sidebar-collapsed' : ''} ${isMobile ? 'mobile-view' : ''}`}>
+            {isMobile && (
+              <div className="mobile-header">
+                <button 
+                  className="mobile-menu-btn" 
+                  onClick={toggleSidebar}
+                  aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                >
+                  {mobileMenuOpen ? <FiX /> : <FiMenu />}
+                </button>
+                <div className="mobile-logo">📝 Notora</div>
+              </div>
+            )}
+            <Sidebar 
+              collapsed={isMobile ? !mobileMenuOpen : sidebarCollapsed} 
+              toggleSidebar={toggleSidebar} 
+              className={isMobile && mobileMenuOpen ? 'mobile-open' : ''}
+            />
+            <main className={`main-content ${isMobile ? 'mobile-content' : ''}`}>
               <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<HomePage />} />

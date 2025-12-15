@@ -766,6 +766,43 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
+
+@media (max-width: 768px) {
+  .editor-toolbar {
+    padding: 10px;
+    gap: 8px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .formatting-buttons,
+  .list-buttons,
+  .insert-buttons,
+  .action-buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .action-buttons {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  
+  .toolbar-button {
+    padding: 12px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .save-button,
+  .lock-button,
+  .archive-button {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+  }
+}
 .formatting-buttons,
 .list-buttons,
 .insert-buttons,
@@ -904,19 +941,261 @@
   background-color: var(--color-black);
   color: var(--color-white);
 }
-@media (max-width: 768px) {
-  .sidebar {
-    width: 60px;
+/* Mobile-first responsive design */
+@media (max-width: 480px) {
+  .app-container {
+    flex-direction: column;
   }
-  .sidebar-logo span, .nav-item span {
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateY(0);
+  }
+  
+  .sidebar.collapsed {
+    transform: translateY(-100%);
+  }
+  
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 80px 15px 20px 15px;
+    margin-top: 60px;
+  }
+  
+  .sidebar-collapsed .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .sidebar-header {
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    background: linear-gradient(135deg, var(--color-cork) 0%, var(--color-cork-dark) 100%);
+    z-index: 1001;
+  }
+  
+  .mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(135deg, var(--color-cork) 0%, var(--color-cork-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    z-index: 999;
+    border-bottom: 2px solid var(--color-wood);
+    box-shadow: 0 2px 8px var(--color-shadow);
+  }
+  
+  .mobile-menu-btn {
+    background: transparent;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+  
+  .mobile-logo {
+    font-family: var(--font-heading);
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--text-color);
+  }
+  
+  .nav-item {
+    padding: 15px 20px;
+    margin: 8px 15px;
+    font-size: 1rem;
+  }
+  
+  .nav-item-icon {
+    font-size: 1.3rem;
+    margin-right: 12px;
+  }
+  
+  .new-note-btn {
+    margin: 15px;
+    padding: 15px;
+    font-size: 1rem;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .header-actions {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .search-bar {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .search-bar.focused {
+    width: 100%;
+  }
+  
+  .notes-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .note-card {
+    margin-bottom: 15px;
+  }
+  
+  .empty-state {
+    margin: 20px 10px;
+    padding: 30px 20px;
+    min-height: 250px;
+  }
+  
+  .empty-state h2 {
+    font-size: 1.3rem;
+  }
+  
+  .empty-state p {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    position: fixed;
+  }
+  
+  .sidebar-logo-text,
+  .nav-item-text,
+  .nav-item-count {
     display: none;
   }
+  
   .nav-item {
     justify-content: center;
-    padding: var(--spacing-md);
+    padding: 12px;
   }
+  
   .nav-item-icon {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+  
+  .main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    padding: 20px;
+  }
+  
+  .sidebar-collapsed .main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+  }
+  
+  .page-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .header-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .search-bar {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .notes-container {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+  }
+  
+  .new-note-btn span {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+  
+  .main-content {
+    margin-left: 200px;
+    width: calc(100% - 200px);
+    padding: 25px;
+  }
+  
+  .sidebar-collapsed .main-content {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+  }
+  
+  .notes-container {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .page-header h1 {
+    font-size: 2.2rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .sidebar {
+    width: 250px;
+  }
+  
+  .main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+  }
+  
+  .sidebar-collapsed .main-content {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+  }
+  
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
 }
 .confirmation-dialog {
@@ -1025,4 +1304,321 @@
 .confirm-button:hover {
   background-color: #ff3333;
   transform: translateY(-2px);
+}
+/* Note Editor Responsive Styles */
+@media (max-width: 768px) {
+  .note-editor-page {
+    padding: 0;
+  }
+  
+  .editor-header {
+    padding: 15px;
+    background: var(--color-desk);
+    border-bottom: 1px solid var(--color-wood);
+    position: sticky;
+    top: 60px;
+    z-index: 10;
+  }
+  
+  .back-button {
+    padding: 12px 16px;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  
+  .note-title {
+    font-size: 1.5rem;
+    padding: 15px 0;
+  }
+  
+  .editor-content {
+    padding: 15px;
+  }
+  
+  .notebook-paper {
+    padding: 20px 15px 20px 35px;
+    margin: 10px 0;
+    min-height: 250px;
+    font-size: 16px;
+    line-height: 1.8rem;
+    background-size: 100% 100%, 100% 1.8rem, 0.5rem 100%;
+  }
+}
+
+/* Confirmation Dialog Responsive */
+@media (max-width: 768px) {
+  .confirmation-content {
+    width: 95%;
+    max-width: 400px;
+    padding: 20px;
+    margin: 0 10px;
+  }
+  
+  .confirmation-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .cancel-button,
+  .confirm-button {
+    width: 100%;
+    justify-content: center;
+    padding: 15px;
+    font-size: 1rem;
+  }
+}
+
+/* Pin Modal Responsive */
+@media (max-width: 768px) {
+  .lock-modal-content {
+    width: 90%;
+    max-width: 350px;
+    padding: 25px 20px;
+  }
+  
+  .pin-input {
+    gap: 10px;
+    margin: 20px 0;
+  }
+  
+  .pin-digit {
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+  }
+}
+
+/* Search Bar Responsive */
+@media (max-width: 480px) {
+  .search-bar input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Note Card Responsive Improvements */
+@media (max-width: 768px) {
+  .note-card {
+    padding: 20px;
+  }
+  
+  .note-card-title {
+    font-size: 1.2rem;
+    line-height: 1.4;
+  }
+  
+  .note-card-preview {
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-line-clamp: 4;
+  }
+  
+  .note-card-tags {
+    margin-top: 15px;
+    gap: 8px;
+  }
+  
+  .note-card-tag {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+}
+
+/* Sticky Notes Responsive */
+@media (max-width: 768px) {
+  .sticky-notes-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .sticky-note {
+    min-height: 180px;
+    padding: 15px;
+  }
+  
+  .sticky-note-content {
+    font-size: 0.9rem;
+  }
+}
+
+/* Profile Page Responsive */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 20px 15px;
+  }
+  
+  .profile-section {
+    margin-bottom: 25px;
+    padding: 20px 15px;
+  }
+  
+  .profile-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .stat-card {
+    padding: 20px 15px;
+  }
+}
+
+/* Tags and Notebooks Page Responsive */
+@media (max-width: 768px) {
+  .tags-container,
+  .notebooks-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .tag-card,
+  .notebook-card {
+    padding: 20px 15px;
+  }
+  
+  .create-tag-form,
+  .create-notebook-form {
+    padding: 20px 15px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-input,
+  .form-textarea {
+    padding: 15px;
+    font-size: 16px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .form-actions button {
+    width: 100%;
+    padding: 15px;
+  }
+}
+
+/* Archive and Locked Notes Responsive */
+@media (max-width: 768px) {
+  .archive-container,
+  .locked-notes-container {
+    padding: 15px;
+  }
+  
+  .archive-header,
+  .locked-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .archive-actions,
+  .locked-actions {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+/* Notification Responsive */
+@media (max-width: 768px) {
+  .notification {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: none;
+  }
+  
+  .notification-content {
+    padding: 15px;
+  }
+  
+  .notification-message {
+    font-size: 1rem;
+  }
+}
+
+/* Loading States Responsive */
+@media (max-width: 768px) {
+  .loading-container {
+    padding: 40px 20px;
+  }
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* Utility Classes for Responsive */
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+  }
+  
+  .desktop-only {
+    display: none;
+  }
+  
+  .mobile-flex {
+    display: flex;
+  }
+  
+  .mobile-grid {
+    display: grid;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  .note-card:hover {
+    transform: none;
+  }
+  
+  .note-card:active {
+    transform: scale(0.98);
+  }
+  
+  .toolbar-button:hover {
+    transform: none;
+  }
+  
+  .toolbar-button:active {
+    transform: scale(0.95);
+  }
+  
+  .nav-item:hover {
+    transform: none;
+  }
+  
+  .nav-item:active {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .main-content {
+    margin-top: 50px;
+    padding-top: 60px;
+  }
+  
+  .mobile-header {
+    height: 50px;
+  }
+  
+  .sidebar {
+    max-height: 60vh;
+  }
 }

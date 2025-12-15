@@ -75,7 +75,7 @@ export const NotesProvider = ({ children }) => {
       const updatedNote = {
         ...notesList[noteIndex],
         ...updates,
-        content: updatedContent, 
+        content: updatedContent,
         updatedAt: new Date().toISOString()
       };
       const updatedNotes = [...notesList];
@@ -283,6 +283,11 @@ export const NotesProvider = ({ children }) => {
   const emptyTrash = () => {
     setTrashedNotes([]);
   };
+
+  const deleteAllLockedNotes = () => {
+    setLockedNotes([]);
+    return true;
+  };
   const getNotesByNotebook = (notebookId) => {
     const filteredNotes = notes.filter(note => note.notebookId === notebookId);
     return filteredNotes;
@@ -324,6 +329,7 @@ export const NotesProvider = ({ children }) => {
     unlockNote,
     togglePinNote,
     emptyTrash,
+    deleteAllLockedNotes,
     tags,
     createTag,
     updateTag,

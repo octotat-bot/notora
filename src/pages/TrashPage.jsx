@@ -8,11 +8,11 @@ const TrashPage = () => {
   const { trashedNotes, restoreNote, permanentlyDeleteNote } = useNotes();
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const filteredNotes = searchQuery 
-    ? trashedNotes.filter(note => 
-        note.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        note.content.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+  const filteredNotes = searchQuery
+    ? trashedNotes.filter(note =>
+      note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : trashedNotes;
   const handleClearSearch = () => {
     setSearchQuery('');
@@ -22,11 +22,10 @@ const TrashPage = () => {
       <div className="page-header">
         <h1>Trash</h1>
         <div className="header-actions">
-          <SearchBar 
-            query={searchQuery} 
-            onQueryChange={setSearchQuery} 
-            isFocused={isSearchFocused}
-            onFocusChange={setIsSearchFocused}
+          <SearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            onClear={handleClearSearch}
             placeholder="Search trashed notes..."
           />
         </div>
@@ -43,12 +42,12 @@ const TrashPage = () => {
             />
           ))
         ) : (
-          <EmptyState 
+          <EmptyState
             icon={searchQuery ? <FiSearch size={40} /> : <FiTrash2 size={40} />}
             title={searchQuery ? "No results found" : "Trash is empty"}
             message={searchQuery ? `No trashed notes found matching "${searchQuery}"` : "Deleted notes will appear here"}
-            action={searchQuery ? 
-              <button className="clear-search-button" onClick={handleClearSearch}>Clear Search</button> : 
+            action={searchQuery ?
+              <button className="clear-search-button" onClick={handleClearSearch}>Clear Search</button> :
               null
             }
           />

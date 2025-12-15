@@ -1,0 +1,464 @@
+/* Responsive styles for Notora app */
+
+/* Base responsive variables */
+:root {
+  --sidebar-width: 250px;
+  --sidebar-collapsed-width: 60px;
+  --header-height: 60px;
+  --mobile-header-height: 60px;
+}
+
+/* Mobile-first approach */
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Mobile header styles */
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--mobile-header-height);
+  background: linear-gradient(135deg, var(--color-cork) 0%, var(--color-cork-dark) 100%);
+  padding: 0 15px;
+  z-index: 1000;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--color-wood);
+  box-shadow: 0 2px 8px var(--color-shadow);
+}
+
+.mobile-menu-btn {
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  padding: 0;
+  box-shadow: none;
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(255, 215, 0, 0.1);
+  transform: none;
+}
+
+.mobile-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+.mobile-new-btn {
+  background: var(--color-primary);
+  color: var(--color-black);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Small screens (mobile) */
+@media (max-width: 480px) {
+  .mobile-header {
+    display: flex;
+  }
+  
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: var(--mobile-header-height);
+    left: 0;
+    right: 0;
+    z-index: 999;
+    border-right: none;
+    border-bottom: 3px solid var(--color-wood);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    max-height: calc(100vh - var(--mobile-header-height));
+    overflow-y: auto;
+  }
+  
+  .sidebar.mobile {
+    transform: translateY(-100%);
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateY(0);
+  }
+  
+  .sidebar-header {
+    display: none;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    margin-top: var(--mobile-header-height);
+    width: 100%;
+    padding: 15px;
+  }
+  
+  /* Note editor */
+  .editor-toolbar {
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .formatting-buttons,
+  .list-buttons,
+  .insert-buttons,
+  .action-buttons {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .toolbar-separator {
+    display: none;
+  }
+  
+  .action-buttons {
+    margin-top: 5px;
+  }
+  
+  .save-button, 
+  .archive-button, 
+  .lock-button {
+    flex: 1;
+    min-width: 0;
+    padding: 8px;
+    font-size: 0.9rem;
+    justify-content: center;
+  }
+  
+  .note-title {
+    font-size: 1.5rem;
+    padding: 10px 0;
+  }
+  
+  .notebook-paper {
+    padding: 15px 15px 15px 35px;
+    min-height: 200px;
+    background-size: 100% 100%, 100% 1.8rem, 0.5rem 100%;
+    line-height: 1.8rem;
+  }
+  
+  /* Notes grid */
+  .notes-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  /* Page headers */
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px 0;
+  }
+  
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .search-bar {
+    width: 100%;
+  }
+  
+  /* Dialogs and modals */
+  .confirmation-content {
+    width: 90%;
+    max-width: 300px;
+    padding: 15px;
+  }
+  
+  .confirmation-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .cancel-button,
+  .confirm-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Improve touch targets */
+  button, 
+  .nav-item,
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Hide text on small buttons */
+  .button-text {
+    display: none;
+  }
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .mobile-header {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 280px;
+    position: fixed;
+    top: var(--mobile-header-height);
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  
+  .sidebar-header {
+    display: none;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    margin-top: var(--mobile-header-height);
+    width: 100%;
+    padding: 20px;
+  }
+  
+  /* Notes grid */
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+  }
+  
+  /* Editor toolbar */
+  .editor-toolbar {
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 8px;
+  }
+  
+  .action-buttons {
+    margin-top: 8px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .toolbar-separator {
+    display: none;
+  }
+}
+
+/* Large screens (laptops) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+  
+  .main-content {
+    margin-left: 200px;
+    width: calc(100% - 200px);
+    padding: 20px;
+  }
+  
+  .sidebar-collapsed .main-content {
+    margin-left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
+  }
+  
+  /* Notes grid */
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+}
+
+/* Extra large screens (desktops) */
+@media (min-width: 1025px) {
+  .sidebar {
+    width: var(--sidebar-width);
+  }
+  
+  .main-content {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    padding: 30px;
+  }
+  
+  .sidebar-collapsed .main-content {
+    margin-left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
+  }
+  
+  /* Notes grid */
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects that don't work well on touch */
+  .note-card:hover,
+  .nav-item:hover,
+  button:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* Add active state for touch feedback */
+  .note-card:active,
+  .nav-item:active,
+  button:active {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+  
+  /* Ensure all interactive elements are large enough for touch */
+  button, 
+  .nav-item,
+  .toolbar-button,
+  input[type="checkbox"],
+  input[type="radio"],
+  .note-card {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent zoom on iOS inputs */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .mobile-header {
+    height: 50px;
+  }
+  
+  .sidebar {
+    top: 50px;
+    max-height: calc(100vh - 50px);
+  }
+  
+  .main-content {
+    margin-top: 50px;
+  }
+  
+  .notes-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+/* Print styles */
+@media print {
+  .sidebar,
+  .mobile-header,
+  .editor-toolbar,
+  .page-header,
+  .confirmation-dialog,
+  .notification-dialog {
+    display: none;
+  }
+  
+  .main-content {
+    margin: 0;
+    width: 100%;
+    padding: 0;
+  }
+  
+  .notebook-paper {
+    box-shadow: none;
+    border: none;
+  }
+  
+  .note-title {
+    font-size: 24pt;
+    margin-bottom: 20pt;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* Utility classes for responsive design */
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+  }
+  
+  .desktop-only {
+    display: none;
+  }
+}
+
+/* Responsive typography */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.3rem;
+  }
+  
+  p, li, button {
+    font-size: 1rem;
+  }
+}

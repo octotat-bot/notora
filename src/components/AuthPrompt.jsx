@@ -6,13 +6,13 @@ const AuthPrompt = ({ feature, message }) => {
   const navigate = useNavigate();
 
   const handleSignIn = () => {
-    // Store the intended feature for redirect after auth
+
     sessionStorage.setItem('intendedFeature', feature);
     navigate('/sign-in');
   };
 
   const handleSignUp = () => {
-    // Store the intended feature for redirect after auth
+
     sessionStorage.setItem('intendedFeature', feature);
     navigate('/sign-up');
   };

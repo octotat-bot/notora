@@ -190,27 +190,7 @@
   display: none;
 }
 
-.sidebar-logo-img {
-  height: 40px;
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
-  border-radius: 4px;
-  /* Optional: adds a slight finish */
-}
 
-.sidebar.collapsed .sidebar-logo-img {
-  height: 24px;
-  /* Smaller when collapsed */
-}
-
-/* Ensure header fits in collapsed mode */
-.sidebar.collapsed .sidebar-header {
-  padding-left: 8px;
-  padding-right: 8px;
-  flex-direction: column;
-  gap: 10px;
-}
 
 .sidebar-nav {
   padding: var(--spacing-md) 0;

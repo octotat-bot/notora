@@ -105,7 +105,7 @@ const Sidebar = ({ collapsed, toggleSidebar, className = '' }) => {
             {collapsed ? <FiMenu /> : <FiX />}
           </button>
           <div className="mobile-logo">
-            <span className="sidebar-logo-icon">📝</span> Notora
+            <img src="/logo.png" alt="Notora" className="sidebar-logo-img" style={{ height: '32px' }} />
           </div>
           <Link to="/new" className="mobile-new-btn">
             <FiPlus />
@@ -116,8 +116,7 @@ const Sidebar = ({ collapsed, toggleSidebar, className = '' }) => {
       <div className={`sidebar ${collapsed ? 'collapsed' : ''} ${isMobile ? 'mobile' : ''} ${mobileMenuOpen ? 'mobile-open' : ''} ${className}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <span className="sidebar-logo-icon">📝</span>
-            <span className="sidebar-logo-text">Notora</span>
+            <img src="/logo.png" alt="Notora" className="sidebar-logo-img" style={{ height: '40px' }} />
           </div>
           <button
             className="sidebar-toggle"

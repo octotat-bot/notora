@@ -25,7 +25,6 @@ const LockedNotesPage = () => {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
   const [currentNote, setCurrentNote] = useState(null);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   useEffect(() => {
     if (!isPinSet) {

@@ -32,10 +32,6 @@ const NoteEditorPage = () => {
     setViewMode(false);
   }, [location, id]);
   useEffect(() => {
-    console.log('NoteEditorPage: id =', id);
-    console.log('NoteEditorPage: notes =', notes);
-    console.log('NoteEditorPage: archivedNotes =', archivedNotes);
-    console.log('NoteEditorPage: lockedNotes =', lockedNotes);
 
     if (id === 'new') {
       setIsNew(true);
@@ -186,9 +182,9 @@ const NoteEditorPage = () => {
         <button className="back-button" onClick={handleBackClick}>
           <FiArrowLeft /> <span className="button-text">Back</span>
         </button>
-        
+
         <div className="mobile-only editor-quick-actions">
-          <button 
+          <button
             className="mobile-save-button"
             onClick={handleSave}
             aria-label="Save Note"

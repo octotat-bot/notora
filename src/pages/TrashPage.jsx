@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNotes } from '../context/NotesContext';
 import NoteCard from '../components/NoteCard';
 import SearchBar from '../components/SearchBar';
 import EmptyState from '../components/EmptyState';
-import { FiSearch, FiTrash2, FiX, FiAlertTriangle } from 'react-icons/fi';
+import { FiSearch, FiTrash2 } from 'react-icons/fi';
 const TrashPage = () => {
   const { trashedNotes, restoreNote, permanentlyDeleteNote } = useNotes();
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
+
   const filteredNotes = searchQuery
     ? trashedNotes.filter(note =>
       note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

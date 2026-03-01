@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, createPortal } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { useNotes } from '../context/NotesContext';
@@ -10,7 +11,7 @@ import {
   FiList,
   FiCheckSquare,
   FiImage,
-  FiFile,
+
   FiSave,
   FiArchive,
   FiLock,

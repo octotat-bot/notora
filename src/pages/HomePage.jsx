@@ -1,19 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNotes } from '../context/NotesContext';
-import { FiPlus, FiFileText, FiSearch, FiStar, FiArchive, FiTrash2, FiBook } from 'react-icons/fi';
+import { FiPlus, FiFileText, FiSearch, FiStar, FiArchive, FiTrash2 } from 'react-icons/fi';
 import SearchBar from '../components/SearchBar';
 import EmptyState from '../components/EmptyState';
 import StickyNote from '../components/StickyNote';
-import { v4 as uuidv4 } from 'uuid';
+
 import '../styles/StickyNotes.css';
 const HomePage = () => {
   const navigate = useNavigate();
   const { notes, archiveNote, deleteNote, togglePinNote, createNote, getNotesWithoutNotebook } = useNotes();
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [activeNoteId, setActiveNoteId] = useState(null);
-  const [initialLoad, setInitialLoad] = useState(true);
+
+
   const createDefaultNote = () => {
     return {
       id: 'default-note',
@@ -24,12 +23,12 @@ const HomePage = () => {
       notebookId: null,
       tagIds: [],
       isPinned: false,
-      isDefault: true 
+      isDefault: true
     };
   };
   const notesWithoutNotebook = getNotesWithoutNotebook();
-  const notesToDisplay = notesWithoutNotebook.length === 0 && !searchQuery 
-    ? [createDefaultNote()] 
+  const notesToDisplay = notesWithoutNotebook.length === 0 && !searchQuery
+    ? [createDefaultNote()]
     : notesWithoutNotebook;
   const filteredNotes = notesToDisplay.filter(note => {
     const lowerCaseQuery = searchQuery.toLowerCase();
@@ -59,11 +58,11 @@ const HomePage = () => {
       <div className="page-header">
         <h1>My Notes</h1>
         <div className="header-actions">
-          <div className={isSearchFocused ? 'focused' : ''}>
-            <SearchBar 
-              searchQuery={searchQuery} 
-              setSearchQuery={setSearchQuery} 
-              onClear={handleClearSearch} 
+          <div>
+            <SearchBar
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              onClear={handleClearSearch}
             />
           </div>
           <Link to="/new" className="new-note-button">
@@ -119,12 +118,12 @@ const HomePage = () => {
           </>
         ) : (
           <div className="notes-container">
-            <EmptyState 
+            <EmptyState
               icon={searchQuery ? <FiSearch size={40} /> : <FiFileText size={40} />}
               title={searchQuery ? "No results found" : "No notes yet"}
               message={searchQuery ? `No notes found matching "${searchQuery}"` : "Start capturing your ideas and thoughts"}
-              action={searchQuery ? 
-                <button className="clear-search-button" onClick={handleClearSearch}>Clear Search</button> : 
+              action={searchQuery ?
+                <button className="clear-search-button" onClick={handleClearSearch}>Clear Search</button> :
                 <Link to="/new" className="create-first-note"><FiPlus /> Create your first note</Link>
               }
             />

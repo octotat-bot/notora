@@ -1,12 +1,35 @@
-# React + Vite
+# Notora
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A note-taking web app with notebooks, tags, an archive, a trash view and PIN-locked notes. Sign-in is handled by Clerk.
 
-Currently, two official plugins are available:
+**Live demo:** https://notora-two.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Create and edit notes
+- Organise with notebooks and tags
+- Search notes
+- Archive and restore, with a separate trash view
+- Lock notes behind a four-digit PIN
+- Sign-up, sign-in and protected routes through Clerk
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Limitations
+
+Notes are stored in the browser's `localStorage`, so they stay on one device and aren't synced. The PIN controls access in the interface and isn't encryption.
+
+## Stack
+
+React, Vite, React Router, Clerk, React Context
+
+## Run it locally
+
+```bash
+npm install
+npm run dev
+```
+
+The app needs a Clerk publishable key in `.env`:
+
+```env
+VITE_CLERK_PUBLISHABLE_KEY=your_key
+```
